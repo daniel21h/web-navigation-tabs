@@ -3,7 +3,8 @@ const $ = document.querySelector.bind(document);
 function TabNavigation() {
   const html = {
     links: [...$('.tab-links').children],
-    contents: [...$('.tab-content').children]
+    contents: [...$('.tab-content').children],
+    defaultTab: $('[data-default]')
   }
 
   function hideAllTabContent() {
@@ -13,7 +14,9 @@ function TabNavigation() {
   }
 
   function removeAllActiveClass() {
-
+    html.links.forEach(tab => {
+      tab.className = tab.className.replace(' active', '')
+    })
   }
 
   function showCurrentTab(id) {
@@ -23,9 +26,12 @@ function TabNavigation() {
 
   function selectTab(event) {
     hideAllTabContent()
+    removeAllActiveClass()
 
     const target = event.currentTarget
     showCurrentTab(target.dataset.id)
+
+    target.className += ' active'
   }
 
   function listenForChange() {
@@ -37,6 +43,8 @@ function TabNavigation() {
   function init() {
     hideAllTabContent()
     listenForChange()
+
+    html.defaultTab.click()
   }
 
   return {
